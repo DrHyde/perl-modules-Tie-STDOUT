@@ -1,8 +1,10 @@
 package Tie::STDOUT;
 
+use 5.008;
+
 no warnings; # in case they've been turned on
 
-$VERSION = '1.02';
+$VERSION = '1.03';
 
 use strict;
 
@@ -66,7 +68,8 @@ rarely used, you will normally only have to provide your own code for
 
 =head1 BUGS
 
-None known.  Please report any that you find using L<http://rt.cpan.org/>.
+Doesn't work on perl 5.6, because it seems that localising tied
+filehandles doesn't work.
 
 =head1 SEE ALSO
 
