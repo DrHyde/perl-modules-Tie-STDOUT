@@ -10,8 +10,8 @@ use File::Temp;
 
 local $/ = undef;
 my $tempfile = File::Temp::tempnam('.', 'tie-stdout-test-');
-my $preamble = $Config{perlpath}." -Ilib -e '";
-my $postamble = "' >$tempfile";
+my $preamble = $Config{perlpath}." -Ilib -e \"";
+my $postamble = "\" >$tempfile";
 
 system($preamble.q{ use Tie::STDOUT; print qq{foo\n}; print qq{bar\n}; printf qq{%s %d\n}, qq{foo}, 20; syswrite STDOUT, qq{gibberish}, 5, 2; }.$postamble);
 

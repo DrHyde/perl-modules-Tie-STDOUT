@@ -1,3 +1,5 @@
+1.05    2009-03-19      Apply the patch properly this time!
+
 1.04    2009-03-18      Fix failing test on Windows (stupid quoting rules on -e)
                           thanks to David Golden for the patch
 
