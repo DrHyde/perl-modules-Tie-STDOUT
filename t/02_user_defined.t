@@ -9,13 +9,14 @@ my $accumulator;
 
 use Tie::STDOUT
     print    => sub { $accumulator = ''; $accumulator .= uc($_) foreach(@_) },
-    printf   => sub { $accumulator = ''; my $fmt = shift(); $accumulator .= uc(sprintf($fmt, @_)) };
-    # can't be bothered with syswrite, as the code which handles it is exactly
-    # the same as the others
+    printf   => sub { $accumulator = ''; my $fmt = shift(); $accumulator .= uc(sprintf($fmt, @_)) },
+    syswrite => sub { $accumulator = ''; $accumulator = substr(uc($_[0]), $_[2], $_[1]) };
 
 print qw(foo bar baz);
-ok($accumulator eq 'FOOBARBAZ', 'user-defined functions work');
+is($accumulator, 'FOOBARBAZ', "user-defined 'print' works");
 
 printf "%s %d", "foo", 20;
+is($accumulator, 'FOO 20', "user-defined 'printf' works");
 
-ok($accumulator eq 'FOO 20', 'user-defined functions work');
+syswrite(STDOUT, "gibberish", 5, 2);
+is($accumulator, 'BBERI', "user-defined 'syswrite' works");
