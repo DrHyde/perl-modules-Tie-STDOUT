@@ -3,22 +3,51 @@
 use strict;
 use warnings;
 
-use Test::More tests => 1;
+use Test::More;
+END { done_testing() }
 
 use Config;
 use File::Temp;
 
 local $/ = undef;
-my $tempfile = File::Temp::tempnam('.', 'tie-stdout-test-');
-my $preamble = join(' ',
-    $Config{perlpath},
-    ($ENV{HARNESS_PERL_SWITCHES} && $ENV{HARNESS_PERL_SWITCHES} eq '-MDevel::Cover' ? '-MDevel::Cover' : ''),
-    qw(-Ilib -e ")
+
+test_fragment(
+    q{ print qq{foo\n}; print qq{bar\n}; },
+    "foo\nbar\n",
+    "default 'print' works OK"
 );
-my $postamble = "\" >$tempfile";
 
-system($preamble.q{ use Tie::STDOUT; print qq{foo\n}; print qq{bar\n}; printf qq{%s %d\n}, qq{foo}, 20; syswrite STDOUT, qq{gibberish}, 5, 2; }.$postamble);
+test_fragment(
+    q{ printf qq{%s %d\n}, qq{foo}, 20; },
+    "foo 20\n",
+    "default 'printf' works OK"
+);
 
-open(FILE, $tempfile);
-ok(<FILE> eq "foo\nbar\nfoo 20\nbberi", "defaults work OK");
-unlink($tempfile);
+test_fragment(
+    q{ syswrite STDOUT, qq{gibberish}, 5; },
+    "gibbe",
+    "default 'syswrite' works with no offset"
+);
+
+test_fragment(
+    q{ syswrite STDOUT, qq{gibberish}, 5, 2; },
+    "bberi",
+    "default 'syswrite' works with an offset"
+);
+
+sub test_fragment {
+    my($fragment, $expected, $message) = @_;
+
+    my $tempfile = File::Temp::tempnam('.', 'tie-stdout-test-');
+    my $preamble = join(' ',
+        $Config{perlpath},
+        ($ENV{HARNESS_PERL_SWITCHES} && $ENV{HARNESS_PERL_SWITCHES} eq '-MDevel::Cover' ? '-MDevel::Cover' : ''),
+        qw(-Ilib -MTie::STDOUT -e ")
+    );
+    my $postamble = "\" >$tempfile";
+
+    system($preamble.$fragment.$postamble);
+    open(FILE, $tempfile);
+    is(<FILE>, $expected, $message);
+    unlink($tempfile);
+}
