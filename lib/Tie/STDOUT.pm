@@ -75,9 +75,11 @@ filehandles doesn't work.
 
 =over 4
 
-=item Tie::STDERR
+=item Capture::Tiny
 
 =item IO::Capture::Stdout
+
+=item Tie::STDERR
 
 =back
 
