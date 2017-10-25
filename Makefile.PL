@@ -3,7 +3,7 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
     NAME      => 'Tie::STDOUT',
     META_MERGE => {
-        license => 'other',
+        license => 'open_source',
         resources => {
 	    repository => 'https://github.com/DrHyde/perl-modules-Tie-STDOUT',
 	    bugtracker => 'https://github.com/DrHyde/perl-modules-Tie-STDOUT/issues'
