@@ -4,7 +4,6 @@ use strict;
 use warnings;
 
 use Test::More;
-END { done_testing() };
 my $accumulator;
 
 use Tie::STDOUT
@@ -20,3 +19,5 @@ is($accumulator, 'FOO 20', "user-defined 'printf' works");
 
 syswrite(STDOUT, "gibberish", 5, 2);
 is($accumulator, 'BBERI', "user-defined 'syswrite' works");
+
+done_testing();

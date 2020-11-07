@@ -4,7 +4,6 @@ use strict;
 use warnings;
 
 use Test::More;
-END { done_testing() }
 
 use Config;
 use File::Temp;
@@ -34,6 +33,8 @@ test_fragment(
     "bberi",
     "default 'syswrite' works with an offset"
 );
+
+done_testing();
 
 sub test_fragment {
     my($fragment, $expected, $message) = @_;
