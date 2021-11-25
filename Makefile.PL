@@ -11,7 +11,8 @@ WriteMakefile(
     },
     VERSION_FROM => 'lib/Tie/STDOUT.pm',
     PREREQ_PM => {
-        File::Temp => 0,
-        Test::More => 0.88, # done_testing
+        Devel::CheckOS => 0,
+        File::Temp     => 0,
+        Test::More     => 0.88, # done_testing
     }
 );

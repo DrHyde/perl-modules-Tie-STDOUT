@@ -6,19 +6,22 @@ use warnings;
 use Test::More;
 
 use Config;
+use Devel::CheckOS qw(os_is);
 use File::Temp;
 
 local $/ = undef;
 
+my $eol = os_is('MicrosoftWindows') ? "\r\n" : "\n";
+
 test_fragment(
     q{ print qq{foo\n}; print qq{bar\n}; },
-    "foo\nbar\n",
+    "foo${eol}bar${eol}",
     "default 'print' works OK"
 );
 
 test_fragment(
     q{ printf qq{%s %d\n}, qq{foo}, 20; },
-    "foo 20\n",
+    "foo 20${eol}",
     "default 'printf' works OK"
 );
 
