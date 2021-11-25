@@ -34,6 +34,18 @@ test_fragment(
     "default 'syswrite' works with an offset"
 );
 
+test_fragment(
+    q{ binmode STDOUT, ':raw'; print chr(0xED); },
+    chr(0xED),
+    "binmode works (raw)"
+);
+
+test_fragment(
+    q{ binmode STDOUT, ':utf8'; print chr(0xED); },
+    chr(0xC3).chr(0xAD),
+    "binmode works (utf8)"
+);
+
 done_testing();
 
 sub test_fragment {
@@ -48,7 +60,7 @@ sub test_fragment {
     my $postamble = "\" >$tempfile";
 
     system($preamble.$fragment.$postamble);
-    open(FILE, $tempfile);
-    is(<FILE>, $expected, $message);
+    open(my $fh, '<:raw', $tempfile);
+    is(<$fh>, $expected, $message);
     unlink($tempfile);
 }
