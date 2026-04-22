@@ -1,4 +1,4 @@
 ^\.git
 .appveyor.yml
 .cirrus.yml
-^../XML-Tiny/workflow-templates
+^workflow-templates
