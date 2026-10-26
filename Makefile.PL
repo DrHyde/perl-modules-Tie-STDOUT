@@ -2,8 +2,10 @@ use 5.008;
 use ExtUtils::MakeMaker;
 WriteMakefile(
     NAME      => 'Tie::STDOUT',
-    META_MERGE => {
+    META_ADD => {
         license => 'open_source',
+},
+META_MERGE => {
         resources => {
 	    repository => 'https://github.com/DrHyde/perl-modules-Tie-STDOUT',
 	    bugtracker => 'https://github.com/DrHyde/perl-modules-Tie-STDOUT/issues'
